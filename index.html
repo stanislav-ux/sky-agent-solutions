@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky Agent Solutions - Сучасний CRM</title>
+    <!-- Підключення Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Підключення шрифту Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Іконки (для FAQ) - скрипт видалено, оскільки він викликав помилку і не потрібен -->
+
+    <style>
+        /* Базовий стиль для шрифту Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+
+        /* Стиль для "плаваючих" підписів у формі */
+        .floating-label-container {
+            position: relative;
+        }
+
+        .floating-label {
+            position: absolute;
+            top: 0.75rem; /* 12px */
+            left: 1rem; /* 16px */
+            font-size: 1rem; /* 16px */
+            color: #6b7280; /* text-gray-500 */
+            transition: all 0.2s ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Стан, коли інпут в фокусі або має значення */
+        .form-input:focus + .floating-label,
+        .form-input:not(:placeholder-shown) + .floating-label {
+            top: -0.65rem; /* -10px */
+            left: 0.75rem; /* 12px */
+            font-size: 0.75rem; /* 12px */
+            color: #0e7490; /* text-cyan-700 */
+            background-color: #ffffff; /* Фон інпута */
+            padding: 0 0.25rem;
+        }
+
+        /* Стиль для перемикача цін */
+        #price-toggle:checked + .toggle-bg {
+            background-color: #0e7490; /* Колір при увімкненні */
+        }
+        
+        #price-toggle:checked + .toggle-bg .toggle-dot {
+            transform: translateX(100%);
+        }
+
+        /* "Glassmorphism" стиль для карток */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-gray-900 bg-gray-100 relative overflow-x-hidden">
+
+    <!-- Абстрактний "Liquid" фон -->
+    <div class="fixed top-0 -left-60 w-full h-[600px] bg-cyan-300/30 rounded-full filter blur-[150px] opacity-50 -z-10 animate-pulse"></div>
+    <div class="fixed top-1/4 -right-60 w-full h-[700px] bg-teal-300/30 rounded-full filter blur-[150px] opacity-40 -z-10"></div>
+    <div class="fixed bottom-0 left-0 w-full h-[500px] bg-cyan-300/30 rounded-full filter blur-[150px] opacity-50 -z-10 animate-pulse-slow"></div>
+
+    <!-- === НАВІГАЦІЯ === -->
+    <header class="sticky top-0 z-50 bg-white/50 backdrop-blur-lg border-b border-white/20 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-cyan-700">
+                Sky Agent Solutions
+            </div>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#features" class="text-gray-600 hover:text-cyan-700 transition-colors">Features</a>
+                <a href="#pricing" class="text-gray-600 hover:text-cyan-700 transition-colors">Pricing</a>
+                <a href="#faq" class="text-gray-600 hover:text-cyan-700 transition-colors">FAQ</a>
+                <a href="#contact" class="text-gray-600 hover:text-cyan-700 transition-colors">Contact</a>
+                <a href="#" id="login-button" class="js-login-button text-gray-600 hover:text-cyan-700 transition-colors cursor-pointer">Login</a>
+                <a href="#contact" class="px-5 py-2.5 rounded-lg font-medium bg-cyan-600 text-white hover:bg-cyan-700 transition-all shadow-md hover:shadow-lg">
+                    Schedule Demo
+                </a>
+            </div>
+            <div class="md:hidden">
+                <!-- Мобільне меню (іконка) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- === ГОЛОВНИЙ ЕКРАН (HERO) === -->
+        <section class="relative min-h-[90vh] flex items-center text-gray-900 overflow-hidden py-24 md:py-32">
+            <!-- Фон прозорий, показує "liquid" фон тіла -->
+            
+            <div class="container mx-auto px-6 text-center z-10">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight text-gray-800">
+                    Transform your real estate business
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 mb-10">
+                    Streamline operations, increase efficiency, and close more deals with Sky Agent Solutions CRM. The all-in-one platform built specifically for real estate professionals.
+                </p>
+                
+                <!-- Кнопки CTA -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                    <a href="#contact" class="px-8 py-3.5 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        Schedule Demo
+                    </a>
+                    <a href="#" class="js-login-button px-8 py-3.5 rounded-lg font-semibold bg-white/70 text-gray-700 backdrop-blur-sm border border-gray-200/50 hover:bg-white/90 transition-all text-lg">
+                        Login
+                    </a>
+                </div>
+
+                <!-- Статистика (Glass Cards) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-5xl font-bold text-cyan-700 mb-2">35%</div>
+                        <div class="text-lg text-gray-700">Increase in User Engagement</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-5xl font-bold text-cyan-700 mb-2">25%</div>
+                        <div class="text-lg text-gray-700">Faster Onboarding</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="text-5xl font-bold text-cyan-700 mb-2">98%</div>
+                        <div class="text-lg text-gray-700">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === СЕКЦІЯ МОЖЛИВОСТЕЙ (FEATURES) === -->
+        <section id="features" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Powerful Features for Success</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Everything you need to manage your real estate business efficiently and effectively.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Картка 1: Deal Pipeline -->
+                    <div class="glass-card p-8 rounded-2xl transition-all hover:shadow-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-cyan-800">Deal Pipeline Management</h3>
+                        <p class="text-gray-600 mb-5">Visual deal tracking with automated workflow stages and suggested actions for easy data optimization.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Visual workflow stages</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Automated follow-ups</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>85% win rate</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Картка 2: Contact & Lead Mgmt -->
+                    <div class="glass-card p-8 rounded-2xl transition-all hover:shadow-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-cyan-800">Contact & Lead Management</h3>
+                        <p class="text-gray-600 mb-5">Centralized client database with intelligent lead scoring and comprehensive communication history.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Lead scoring system</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Contact segmentation</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Follow-up automation</li>
+                        </ul>
+                    </div>
+
+                    <!-- Картка 3: Property Listings -->
+                    <div class="glass-card p-8 rounded-2xl transition-all hover:shadow-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-cyan-800">Property Listings Management</h3>
+                        <p class="text-gray-600 mb-5">Comprehensive property database with 285+ active listings, smart categorization, and market insights.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>285+ active listings</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Smart categorization</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Market analytics</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- === НОВІ КАРТКИ ПОЧИНАЮТЬСЯ ТУТ === -->
+                    
+                    <!-- Картка 4: Analytics & Reporting -->
+                    <div class="glass-card p-8 rounded-2xl transition-all hover:shadow-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-cyan-800">Analytics & Reporting</h3>
+                        <p class="text-gray-600 mb-5">Real-time insights dashboard with performance tracking, business intelligence, and custom reports.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Real-time dashboards</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Custom reports</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Performance metrics</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Market trends</li>
+                        </ul>
+                    </div>
+
+                    <!-- Картка 5: Communications Hub -->
+                    <div class="glass-card p-8 rounded-2xl transition-all hover:shadow-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-cyan-800">Communications Hub</h3>
+                        <p class="text-gray-600 mb-5">Unified messaging platform for client follow-ups, team collaboration, and automated communications.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Unified inbox</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Automated follow-ups</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Team collaboration</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Email campaigns</li>
+                        </ul>
+                    </div>
+
+                    <!-- Картка 6: Mobile-First Design -->
+                    <div class="glass-card p-8 rounded-2xl transition-all hover:shadow-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-cyan-800">Mobile-First Design</h3>
+                        <p class="text-gray-600 mb-5">Seamless experience across desktop, tablet, and mobile devices with offline capabilities.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Cross-platform sync</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Offline access</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Mobile optimization</li>
+                            <li class="flex items-center text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Touch-friendly interface</li>
+                        </ul>
+                    </div>
+                    <!-- === НОВІ КАРТКИ КІНЧАЮТЬСЯ ТУТ === -->
+
+                </div>
+            </div>
+        </section>
+
+        <!-- === СЕКЦІЯ ЦІН (PRICING) === -->
+        <section id="pricing" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Simple, Transparent Pricing</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Choose the plan that's right for your business. No hidden fees.</p>
+                </div>
+
+                <!-- Перемикач Місяць/Рік -->
+                <div class="flex justify-center items-center space-x-4 mb-12">
+                    <span class="text-lg font-medium text-gray-700 monthly-text">Monthly</span>
+                    <label for="price-toggle" class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="price-toggle" class="sr-only peer">
+                        <div class="w-14 h-8 bg-gray-300 rounded-full toggle-bg transition-colors peer-focus:ring-4 peer-focus:ring-cyan-200">
+                            <div class="absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform toggle-dot"></div>
+                        </div>
+                    </label>
+                    <span class="text-lg font-medium text-gray-500 yearly-text">
+                        Yearly <span class="text-sm font-semibold text-cyan-600">(Save 17%)</span>
+                    </span>
+                </div>
+
+                <!-- Картки з цінами -->
+                <div class="flex flex-col lg:flex-row justify-center gap-8 max-w-5xl mx-auto">
+                    <!-- План: Professional -->
+                    <div class="w-full lg:w-1/2 glass-card p-8 rounded-2xl">
+                        <h3 class="text-2xl font-semibold mb-2">Professional</h3>
+                        <p class="text-gray-600 mb-6">Perfect for individual agents and small teams.</p>
+                        
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-gray-800 price-monthly">$99</span>
+                            <span class="text-5xl font-extrabold text-gray-800 price-yearly hidden">$82</span>
+                            <span class="text-lg text-gray-500">/month</span>
+                            <span class_name="text-md text-gray-500 price-yearly hidden"> (billed annually)</span>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Up to 5 agents</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Deal pipeline management</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Basic analytics & reporting</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Email support</li>
+                        </ul>
+                        <a href="#contact" class="w-full text-center block px-6 py-3.5 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all">
+                            Contact Sales
+                        </a>
+                    </div>
+
+                    <!-- План: Enterprise (Виділений) -->
+                    <div class="w-full lg:w-1/2 bg-gray-800 text-white p-8 rounded-2xl shadow-2xl relative overflow-hidden transform scale-100 lg:scale-105">
+                        <span class="absolute top-0 right-0 bg-cyan-500 text-white text-xs font-bold px-4 py-1 rounded-bl-lg">Most Popular</span>
+                        <h3 class="text-2xl font-semibold mb-2">Enterprise</h3>
+                        <p class="text-gray-300 mb-6">Tailored solutions for large teams and brokerages.</p>
+                        
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold">Custom</span>
+                            <span class="text-lg text-gray-300/90">pricing</span>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8 text-gray-100">
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Unlimited agents</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Advanced analytics & BI</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Custom integrations</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>Dedicated success manager</li>
+                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300 mr-2 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>API access</li>
+                        </ul>
+                        <a href="#contact" class="w-full text-center block px-6 py-3.5 rounded-lg font-semibold bg-white text-gray-800 hover:bg-gray-100 transition-all">
+                            Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === СЕКЦІЯ FAQ (АККОРДЕОН) === -->
+        <section id="faq" class="py-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
+                    <p class="text-lg text-gray-600">Everything you need to know about Sky Agent Solutions CRM.</p>
+                </div>
+
+                <div class="space-y-4" id="faq-container">
+                    <!-- Питання 1 -->
+                    <div class="faq-item glass-card rounded-lg overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-medium text-gray-800">How quickly can we get started with SkyAgent?</span>
+                            <svg class="faq-icon w-6 h-6 text-cyan-600 transition-transform" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+                            <p>Getting started is fast and easy. After your demo and signup, you can be onboarded and have your team set up within 24-48 hours. We provide full support during the migration process.</p>
+                        </div>
+                    </div>
+                    <!-- Питання 2 -->
+                    <div class="faq-item glass-card rounded-lg overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-medium text-gray-800">Is SkyAgent mobile-friendly?</span>
+                            <svg class="faq-icon w-6 h-6 text-cyan-600 transition-transform" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+                            <p>Yes! SkyAgent is a fully responsive, mobile-first platform. You can access all your data, manage pipelines, and communicate with clients from any device, anywhere.</p>
+                        </div>
+                    </div>
+                    <!-- Питання 3 -->
+                    <div class="faq-item glass-card rounded-lg overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-medium text-gray-800">What kind of analytics and reporting do you provide?</span>
+                            <svg class="faq-icon w-6 h-6 text-cyan-600 transition-transform" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+                            <p>We provide comprehensive analytics, including real-time dashboards, performance metrics, deal forecasting, and custom reports to help you make data-driven decisions.</p>
+                        </div>
+                    </div>
+                    <!-- Питання 4 -->
+                    <div class="faq-item glass-card rounded-lg overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-medium text-gray-800">How secure is my data?</span>
+                            <svg class="faq-icon w-6 h-6 text-cyan-600 transition-transform" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+                            <p>Your data security is our top priority. We use industry-standard encryption, secure cloud infrastructure, and regular security audits to ensure your information is safe and confidential.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === СЕКЦІЯ КОНТАКТІВ (FORM) === -->
+        <section id="contact" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="glass-card p-8 md:p-12 rounded-2xl max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    
+                    <!-- Ліва частина: Інформація -->
+                    <div>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Ready to Transform Your Business?</h2>
+                        <p class="text-lg text-gray-600 mb-8">Schedule a personalized demo and see how SkyAgent CRM can help you close more deals, manage leads better, and grow your real estate business.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xl font-semibold text-cyan-700 mb-1">Sales Team</h4>
+                                <a href="mailto:sales@skyagentsolutions.com" class="text-gray-600 hover:text-cyan-600 text-lg">sales@skyagentsolutions.com</a><br>
+                                <a class="text-gray-600 hover:text-cyan-600 text-lg">+1 202-555-0173</a>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-semibold text-cyan-700 mb-1">Support</h4>
+                                <p class="text-gray-600 text-lg">Monday – Friday, 9 AM – 6 PM EST</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Права частина: Форма з "плаваючими" підписами -->
+                    <div>
+                        <h3 class="text-3xl font-semibold text-gray-800 mb-6">Schedule a Demo</h3>
+                        <form action="https://formspree.io/f/xeovoqqe" method="POST" class="space-y-6">
+                            <!-- Full Name -->
+                            <div class="floating-label-container">
+                                <input type="text" id="full-name" name="full-name" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" " required>
+                                <label for="full-name" class="floating-label">Full Name</label>
+                            </div>
+                            
+                            <!-- Email Address -->
+                            <div class="floating-label-container">
+                                <input type="email" id="email" name="email" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" " required>
+                                <label for="email" class="floating-label">Email Address</label>
+                            </div>
+
+                            <!-- Company -->
+                            <div class="floating-label-container">
+                                <input type="text" id="company" name="company" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" ">
+                                <label for="company" class="floating-label">Company</label>
+                            </div>
+                            
+                            <!-- Phone Number -->
+                            <div class="floating-label-container">
+                                <input type="tel" id="phone" name="phone" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" ">
+                                <label for="phone" class="floating-label">Phone Number</label>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="floating-label-container">
+                                <textarea id="message" name="message" rows="4" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" "></textarea>
+                                <label for="message" class="floating-label">Message</label>
+                            </div>
+
+                            <!-- Кнопка відправки -->
+                            <div>
+                                <button type="submit" class="w-full px-8 py-4 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all text-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                    Schedule Demo
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- === МОДАЛЬНЕ ВІКНО ЛОГІНУ === -->
+    <div id="login-modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div id="login-modal" class="glass-card w-full max-w-md p-8 rounded-2xl relative">
+            <!-- Кнопка закриття -->
+            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h3 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Login</h3>
+            
+            <!-- Повідомлення про помилку -->
+            <div id="login-error-message" class="hidden bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg mb-4 text-center">
+                User does not have access. Please contact support.
+            </div>
+            
+            <form id="login-form" class="space-y-6">
+                <!-- Email Address -->
+                <div class="floating-label-container">
+                    <input type="email" id="login-email" name="email" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" " required>
+                    <label for="login-email" class="floating-label">Email Address</label>
+                </div>
+
+                <!-- Password -->
+                <div class="floating-label-container">
+                    <input type="password" id="login-password" name="password" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" " required>
+                    <label for="login-password" class="floating-label">Password</label>
+                </div>
+
+                <!-- Кнопка відправки -->
+                <div>
+                    <button type="submit" class="w-full px-8 py-3 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all text-lg shadow-md hover:shadow-lg">
+                        Sign In
+                    </button>
+                </div>
+
+                <!-- Скидання паролю -->
+                <div class="text-center">
+                    <a href="#" id="forgot-password-link" class="text-sm text-cyan-700 hover:text-cyan-800 hover:underline">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- === МОДАЛЬНЕ ВІКНО СКИДАННЯ ПАРОЛЮ === -->
+    <div id="reset-modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div id="reset-modal" class="glass-card w-full max-w-md p-8 rounded-2xl relative">
+            <!-- Кнопка закриття -->
+            <button id="close-reset-modal-button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h3 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Reset Password</h3>
+            
+            <!-- Повідомлення про помилку -->
+            <div id="reset-error-message" class="hidden bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg mb-4 text-center">
+                User not found.
+            </div>
+            
+            <form id="reset-form" class="space-y-6">
+                <p class="text-center text-gray-600">Enter your email and we'll send you a link to reset your password.</p>
+                <!-- Email Address -->
+                <div class="floating-label-container">
+                    <input type="email" id="reset-email" name="email" class="form-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder=" " required>
+                    <label for="reset-email" class="floating-label">Email Address</label>
+                </div>
+
+                <!-- Кнопка відправки -->
+                <div>
+                    <button type="submit" class="w-full px-8 py-3 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all text-lg shadow-md hover:shadow-lg">
+                        Send Reset Link
+                    </button>
+                </div>
+
+                <!-- Повернутись до логіну -->
+                <div class="text-center">
+                    <a href="#" id="back-to-login-link" class="text-sm text-cyan-700 hover:text-cyan-800 hover:underline">&larr; Back to Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- === ФУТЕР === -->
+    <footer class="bg-gray-800 text-gray-400 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="text-2xl font-bold text-white mb-4">
+                Sky Agent Solutions
+            </div>
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <p>&copy; 2025 Sky Agent Solutions. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- === СКРИПТИ === -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // --- Логіка для FAQ Аккордеону ---
+            const faqContainer = document.getElementById('faq-container');
+            if (faqContainer) {
+                faqContainer.addEventListener('click', function(e) {
+                    const questionButton = e.target.closest('.faq-question');
+                    if (!questionButton) return;
+
+                    const item = questionButton.closest('.faq-item');
+                    const answer = item.querySelector('.faq-answer');
+                    const icon = questionButton.querySelector('.faq-icon');
+
+                    // Закриваємо всі інші відповіді
+                    const allItems = faqContainer.querySelectorAll('.faq-item');
+                    allItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.faq-answer').classList.add('hidden');
+                            otherItem.querySelector('.faq-icon').classList.remove('rotate-45');
+                            otherItem.querySelector('.faq-icon').innerHTML = '<path d="M12 5v14M5 12h14"/>';
+                        }
+                    });
+
+                    // Відкриваємо/закриваємо поточну
+                    const isHidden = answer.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-45');
+                    
+                    if (isHidden) {
+                        icon.innerHTML = '<path d="M12 5v14M5 12h14"/>'; // Plus icon
+                    } else {
+                        icon.innerHTML = '<path d="M5 12h14"/>'; // Minus icon
+                    }
+                });
+            }
+
+            // --- Логіка для Перемикача Цін ---
+            const priceToggle = document.getElementById('price-toggle');
+            if (priceToggle) {
+                const monthlyPrices = document.querySelectorAll('.price-monthly');
+                const yearlyPrices = document.querySelectorAll('.price-yearly');
+                const monthlyText = document.querySelector('.monthly-text');
+                const yearlyText = document.querySelector('.yearly-text');
+
+                priceToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Вибрано Річний план
+                        monthlyPrices.forEach(el => el.classList.add('hidden'));
+                        yearlyPrices.forEach(el => el.classList.remove('hidden'));
+                        monthlyText.classList.remove('text-gray-700', 'font-medium');
+                        monthlyText.classList.add('text-gray-500');
+                        yearlyText.classList.add('text-gray-700', 'font-medium');
+                        yearlyText.classList.remove('text-gray-500');
+                    } else {
+                        // Вибрано Місячний план
+                        monthlyPrices.forEach(el => el.classList.remove('hidden'));
+                        yearlyPrices.forEach(el => el.classList.add('hidden'));
+                        monthlyText.classList.add('text-gray-700', 'font-medium');
+                        monthlyText.classList.remove('text-gray-500');
+                        yearlyText.classList.remove('text-gray-700', 'font-medium');
+                        yearlyText.classList.add('text-gray-500');
+                    }
+                });
+            }
+
+            // --- Логіка для Модального Вікна Логіну ---
+            const loginButtons = document.querySelectorAll('.js-login-button'); // Використовуємо клас
+            const loginModalOverlay = document.getElementById('login-modal-overlay');
+            const loginModal = document.getElementById('login-modal');
+            const closeModalButton = document.getElementById('close-modal-button');
+            const loginForm = document.getElementById('login-form');
+            const loginErrorMessage = document.getElementById('login-error-message');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+            // --- Елементи Модального Вікна Скидання Паролю ---
+            const resetModalOverlay = document.getElementById('reset-modal-overlay');
+            const resetModal = document.getElementById('reset-modal');
+            const closeResetModalButton = document.getElementById('close-reset-modal-button');
+            const resetForm = document.getElementById('reset-form');
+            const resetErrorMessage = document.getElementById('reset-error-message');
+            const backToLoginLink = document.getElementById('back-to-login-link');
+
+
+            // --- Універсальна функція закриття модальних вікон ---
+            function closeAllModals() {
+                loginModalOverlay.classList.add('hidden');
+                resetModalOverlay.classList.add('hidden');
+                // Сховати всі повідомлення про помилки при закритті
+                loginErrorMessage.classList.add('hidden');
+                resetErrorMessage.classList.add('hidden');
+            }
+
+
+            if (loginButtons.length > 0 && loginModalOverlay && closeModalButton && loginForm && loginErrorMessage) {
+                
+                // Відкрити модальне вікно логіну
+                loginButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeAllModals(); // Закрити інші вікна на випадок, якщо вони відкриті
+                        loginModalOverlay.classList.remove('hidden');
+                    });
+                });
+
+                // Закрити модальне вікно логіну (кнопка "х")
+                closeModalButton.addEventListener('click', closeAllModals);
+
+                // Закрити модальне вікно логіну (клік поза вікном)
+                loginModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === loginModalOverlay) {
+                        closeAllModals();
+                    }
+                });
+
+                // Обробка відправки форми логіну
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Зупиняємо відправку форми
+                    loginErrorMessage.classList.remove('hidden'); // Показываем повідомлення про помилку
+                });
+            }
+
+            // --- Логіка для Вікна Скидання Паролю ---
+            if (resetModalOverlay && forgotPasswordLink && closeResetModalButton && resetForm && backToLoginLink) {
+                
+                // Відкрити вікно скидання (з вікна логіну)
+                forgotPasswordLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loginModalOverlay.classList.add('hidden');
+                    resetModalOverlay.classList.remove('hidden');
+                });
+
+                // Повернутись до логіну (з вікна скидання)
+                backToLoginLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    resetModalOverlay.classList.add('hidden');
+                    loginModalOverlay.classList.remove('hidden');
+                });
+
+                // Закрити вікно скидання (кнопка "х")
+                closeResetModalButton.addEventListener('click', closeAllModals);
+
+                // Закрити вікно скидання (клік поза вікном)
+                resetModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === resetModalOverlay) {
+                        closeAllModals();
+                    }
+                });
+
+                // Обробка відправки форми скидання
+                resetForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    resetErrorMessage.classList.remove('hidden'); // Показываем помилку "User not found"
+                });
+            }
+
+        });
+    </script>
+
+</body>
+</html>
